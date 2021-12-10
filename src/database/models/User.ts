@@ -4,7 +4,8 @@ import { runQuery } from "..";
 export type User = {
   id?: number;
   username: string;
-  email: string;
+  firstName: string;
+  lastName: string;
   password: string;
 };
 
@@ -18,18 +19,17 @@ export class UserStore {
     user.password = hashedPassword;
 
     const result = await runQuery(
-      `INSERT INTO "users" (username, email, password) VALUES ($1, $2, $3)
-      RETURNING id, email, username, password`,
-      [user.username, user.email, user.password],
+      `INSERT INTO "users" (username, firstName, lastName, password)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *`,
+      [user.username, user.firstName, user.lastName, user.password],
     );
-
-    console.log(result.rows);
 
     return result.rows[0];
   }
 
-  static async find(email: string): Promise<User | null> {
-    const result = await runQuery(`SELECT * from "users" WHERE "email" = $1`, [email]);
+  static async find(username: string): Promise<User | null> {
+    const result = await runQuery(`SELECT * from "users" WHERE "username" = $1`, [username]);
 
     if (result.rowCount !== 0) {
       return result.rows[0];
@@ -38,8 +38,8 @@ export class UserStore {
     return null;
   }
 
-  static async authenticate(email: string, password: string): Promise<User | null> {
-    const user = await this.find(email);
+  static async authenticate(username: string, password: string): Promise<User | null> {
+    const user = await this.find(username);
 
     if (user === null) {
       return null;
