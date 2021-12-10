@@ -1,0 +1,24 @@
+{
+  "defaultEnv": { "ENV": "NODE_ENV" },
+  "dev": {
+    "driver": "pg",
+    "database": { "ENV": "DATABASE_DEVELOPMENT" },
+    "host": { "ENV": "DATABASE_DEVELOPMENT_HOST" },
+    "user": { "ENV": "DATABASE_DEVELOPMENT_USERNAME" },
+    "password": { "ENV": "DATABASE_DEVELOPMENT_PASSWORD" }
+  },
+  "test": {
+    "driver": "pg",
+    "database": { "ENV": "DATABASE_TEST" },
+    "host": { "ENV": "DATABASE_TEST_HOST" },
+    "user": { "ENV": "DATABASE_TEST_USERNAME" },
+    "password": { "ENV": "DATABASE_TEST_PASSWORD" }
+  },
+  "prod": {
+    "driver": "pg",
+    "database": { "ENV": "DATABASE_PRODUCTION" },
+    "host": { "ENV": "DATABASE_PRODUCTION_HOST" },
+    "user": { "ENV": "DATABASE_PRODUCTION_USERNAME" },
+    "password": { "ENV": "DATABASE_PRODUCTION_PASSWORD" }
+  }
+}
