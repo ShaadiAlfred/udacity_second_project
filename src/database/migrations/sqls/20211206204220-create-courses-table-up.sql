@@ -1,1 +1,0 @@
-CREATE TABLE courses (id SERIAL PRIMARY KEY, title VARCHAR, "hours" INTEGER);
