@@ -13,14 +13,14 @@ export class ProductStore {
       `INSERT INTO "products" (name, price)
       VALUES ($1, $2)
       RETURNING *`,
-      [product.name, String(product.price)],
+      [product.name, product.price],
     );
 
     return result.rows[0];
   }
 
   static async find(id: number): Promise<Product | null> {
-    const result = await runQuery(`SELECT * from "products" WHERE "id" = $1`, [String(id)]);
+    const result = await runQuery(`SELECT * from "products" WHERE "id" = $1`, [id]);
 
     if (result.rowCount !== 0) {
       return result.rows[0];

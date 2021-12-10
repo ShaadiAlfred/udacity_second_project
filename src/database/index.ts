@@ -3,7 +3,7 @@ import { getDbConfig } from "../helpers";
 
 const dbClient = new Pool(getDbConfig());
 
-export const runQuery = async (query: string, parameters?: string[]): Promise<QueryResult> => {
+export const runQuery = async (query: string, parameters?: any[]): Promise<QueryResult> => {
   await dbClient.connect();
 
   if (parameters !== undefined) {
