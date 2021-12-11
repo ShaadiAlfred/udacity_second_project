@@ -14,6 +14,24 @@ router.post("/", async (req: Request<{}, {}, CreateUserRequest>, res: Response):
     password: req.body.password,
   };
 
+  if (
+    user.username === undefined ||
+    user.firstName === undefined ||
+    user.lastName === undefined ||
+    user.password === undefined
+  ) {
+    return res.status(400).json({ message: "Missing parameters" });
+  }
+
+  if (
+    user.username.length === 0 ||
+    user.firstName.length === 0 ||
+    user.lastName.length === 0 ||
+    user.password.length === 0
+  ) {
+    return res.status(400).json({ message: "Parameters cannot be empty string" });
+  }
+
   try {
     user = await UserStore.create(user);
   } catch (err) {

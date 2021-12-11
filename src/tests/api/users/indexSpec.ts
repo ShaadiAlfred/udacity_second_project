@@ -33,4 +33,37 @@ describe("Test users routes", () => {
         done();
       });
   });
+
+  it("should fail because missing username", (done) => {
+    request(app)
+      .post("/api/users")
+      .send({
+        firstName: "John",
+        lastName: "Doe",
+        password: "password",
+      })
+      .expect(400)
+      .end((_err, res) => {
+        expect(res.body.message).toBe("Missing parameters");
+
+        done();
+      });
+  });
+
+  it("should fail because username is empty string", (done) => {
+    request(app)
+      .post("/api/users")
+      .send({
+        username: "",
+        firstName: "John",
+        lastName: "Doe",
+        password: "password",
+      })
+      .expect(400)
+      .end((_err, res) => {
+        expect(res.body.message).toBe("Parameters cannot be empty string");
+
+        done();
+      });
+  });
 });
