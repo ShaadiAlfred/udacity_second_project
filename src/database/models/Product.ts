@@ -28,4 +28,14 @@ export class ProductStore {
 
     return null;
   }
+
+  static async index(): Promise<Product[]> {
+    const result = await runQuery(`SELECT * from "products"`);
+
+    if (result.rowCount === 0) {
+      return [];
+    }
+
+    return result.rows;
+  }
 }

@@ -85,7 +85,11 @@ describe("Test users routes", () => {
       .expect(200)
       .set("Authorization", "Bearer " + token)
       .end((_err, res) => {
-        expect(res.body).toEqual([user1]);
+        expect(res.body[0].id).toBeDefined();
+        expect(res.body[0].username).toBeDefined();
+        expect(res.body[0].firstname).toBeDefined();
+        expect(res.body[0].lastname).toBeDefined();
+        expect(res.body[0].password).toBeUndefined();
         done();
       });
   });
@@ -107,7 +111,11 @@ describe("Test users routes", () => {
         .set("Authorization", "Bearer " + token)
         .expect(200)
         .end(async (_err, res) => {
-          expect(res.body).toEqual({ id: 1, username: "johndoe", firstname: "John", lastname: "Doe" });
+          expect(res.body.id).toBeDefined();
+          expect(res.body.username).toBeDefined();
+          expect(res.body.firstname).toBeDefined();
+          expect(res.body.lastname).toBeDefined();
+          expect(res.body.password).toBeUndefined();
           done();
         });
     });
