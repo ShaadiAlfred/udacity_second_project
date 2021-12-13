@@ -3,14 +3,21 @@ import request from "supertest";
 
 let token: string;
 
+const user1 = {
+  id: 1,
+  username: "johndoe",
+  firstname: "John",
+  lastname: "Doe",
+};
+
 describe("Test users routes", () => {
   it("POST /api/users should create a user", (done) => {
     request(app)
       .post("/api/users")
       .send({
         username: "johndoe",
-        firstName: "John",
-        lastName: "Doe",
+        firstname: "John",
+        lastname: "Doe",
         password: "password",
       })
       .expect(200)
@@ -28,8 +35,8 @@ describe("Test users routes", () => {
       .post("/api/users")
       .send({
         username: "johndoe",
-        firstName: "John",
-        lastName: "Doe",
+        firstname: "John",
+        lastname: "Doe",
         password: "password",
       })
       .expect(400)
@@ -43,8 +50,8 @@ describe("Test users routes", () => {
     request(app)
       .post("/api/users")
       .send({
-        firstName: "John",
-        lastName: "Doe",
+        firstname: "John",
+        lastname: "Doe",
         password: "password",
       })
       .expect(400)
@@ -60,14 +67,25 @@ describe("Test users routes", () => {
       .post("/api/users")
       .send({
         username: "",
-        firstName: "John",
-        lastName: "Doe",
+        firstname: "John",
+        lastname: "Doe",
         password: "password",
       })
       .expect(400)
       .end((_err, res) => {
         expect(res.body.message).toBe("Parameters cannot be empty string");
 
+        done();
+      });
+  });
+
+  it("should return all users GET /api/users", (done) => {
+    request(app)
+      .get("/api/users")
+      .expect(200)
+      .set("Authorization", "Bearer " + token)
+      .end((_err, res) => {
+        expect(res.body).toEqual([user1]);
         done();
       });
   });

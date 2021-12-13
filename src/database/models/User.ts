@@ -5,8 +5,8 @@ import { runQuery } from "..";
 export type User = {
   id?: number;
   username: string;
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   password: string;
 };
 
@@ -20,17 +20,17 @@ export class UserStore {
     user.password = hashedPassword;
 
     const result = await runQuery(
-      `INSERT INTO "users" (username, firstName, lastName, password)
+      `INSERT INTO "users" (username, firstname, lastname, password)
       VALUES ($1, $2, $3, $4)
       RETURNING *`,
-      [user.username, user.firstName, user.lastName, user.password],
+      [user.username, user.firstname, user.lastname, user.password],
     );
 
     return result.rows[0];
   }
 
   static async find(usernameOrId: string | number, withPassword = true): Promise<User | null> {
-    const $select = `SELECT id, username, firstName, lastName from "users"`;
+    const $select = `SELECT id, username, firstname, lastname from "users"`;
 
     let result: QueryResult;
 
@@ -54,6 +54,16 @@ export class UserStore {
     }
 
     return null;
+  }
+
+  static async index(): Promise<User[]> {
+    const result = await runQuery(`SELECT id, username, firstname, lastname from "users"`);
+
+    if (result.rowCount === 0) {
+      return [];
+    }
+
+    return result.rows;
   }
 
   static async authenticate(username: string, password: string): Promise<User | null> {

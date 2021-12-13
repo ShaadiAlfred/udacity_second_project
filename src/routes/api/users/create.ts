@@ -9,15 +9,15 @@ const router = express.Router();
 router.post("/", async (req: Request<{}, {}, CreateUserRequest>, res: Response): Promise<Response> => {
   let user = {
     username: req.body.username,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
     password: req.body.password,
   };
 
   if (
     user.username === undefined ||
-    user.firstName === undefined ||
-    user.lastName === undefined ||
+    user.firstname === undefined ||
+    user.lastname === undefined ||
     user.password === undefined
   ) {
     return res.status(400).json({ message: "Missing parameters" });
@@ -25,8 +25,8 @@ router.post("/", async (req: Request<{}, {}, CreateUserRequest>, res: Response):
 
   if (
     user.username.length === 0 ||
-    user.firstName.length === 0 ||
-    user.lastName.length === 0 ||
+    user.firstname.length === 0 ||
+    user.lastname.length === 0 ||
     user.password.length === 0
   ) {
     return res.status(400).json({ message: "Parameters cannot be empty string" });
