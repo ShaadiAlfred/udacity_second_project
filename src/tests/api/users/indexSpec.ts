@@ -1,6 +1,8 @@
 import app from "../../../index";
 import request from "supertest";
 
+let token: string;
+
 describe("Test users routes", () => {
   it("POST /api/users should create a user", (done) => {
     request(app)
@@ -14,6 +16,9 @@ describe("Test users routes", () => {
       .expect(200)
       .end((_err, res) => {
         expect(res.body.token).toBeDefined();
+
+        token = res.body.token;
+
         done();
       });
   });
@@ -65,5 +70,28 @@ describe("Test users routes", () => {
 
         done();
       });
+  });
+
+  describe("Tests GET /api/users/:id", () => {
+    it("should fail because token is missing", (done) => {
+      request(app)
+        .get("/api/users/1")
+        .expect(401)
+        .end((_err, res) => {
+          expect(res.body.message).toBe("Authentication failed");
+          done();
+        });
+    });
+
+    it("should return the first user", (done) => {
+      request(app)
+        .get("/api/users/1")
+        .set("Authorization", "Bearer " + token)
+        .expect(200)
+        .end(async (_err, res) => {
+          expect(res.body).toEqual({ id: 1, username: "johndoe", firstname: "John", lastname: "Doe" });
+          done();
+        });
+    });
   });
 });

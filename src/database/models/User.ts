@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import { QueryResult } from "pg";
 import { runQuery } from "..";
 
 export type User = {
@@ -28,8 +29,25 @@ export class UserStore {
     return result.rows[0];
   }
 
-  static async find(username: string): Promise<User | null> {
-    const result = await runQuery(`SELECT * from "users" WHERE "username" = $1`, [username]);
+  static async find(usernameOrId: string | number, withPassword = true): Promise<User | null> {
+    const $select = `SELECT id, username, firstName, lastName from "users"`;
+
+    let result: QueryResult;
+
+    if (typeof usernameOrId === "string" && isNaN(parseInt(usernameOrId))) {
+      const username: string = usernameOrId;
+      if (withPassword) {
+        result = await runQuery(`SELECT * from "users" WHERE "username" = $1`, [username]);
+      } else {
+        result = await runQuery($select + ` WHERE "username" = $1`, [username]);
+      }
+    } else {
+      if (withPassword) {
+        result = await runQuery(`SELECT * from "users" WHERE "id" = $1`, [usernameOrId]);
+      } else {
+        result = await runQuery($select + ` WHERE "id" = $1`, [usernameOrId]);
+      }
+    }
 
     if (result.rowCount !== 0) {
       return result.rows[0];
