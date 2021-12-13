@@ -63,4 +63,16 @@ describe("Test product's routes", () => {
         done();
       });
   });
+
+  it("should return the product by id GET /api/products/:id", (done) => {
+    request(app)
+      .get("/api/products/1")
+      .expect(200)
+      .end((_err, res) => {
+        expect(res.body.id).toBeDefined();
+        expect(res.body.name).toBeDefined();
+        expect(res.body.price).toBeDefined();
+        done();
+      });
+  });
 });
