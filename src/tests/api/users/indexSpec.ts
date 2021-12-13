@@ -112,4 +112,20 @@ describe("Test users routes", () => {
         });
     });
   });
+
+  describe("Test login route POST /api/users/login", () => {
+    it("should log in and get a token", (done) => {
+      request(app)
+        .post("/api/users/login")
+        .send({
+          username: user1.username,
+          password: "password",
+        })
+        .expect(200)
+        .end((_err, res) => {
+          expect(res.body.token).toBeDefined();
+          done();
+        });
+    });
+  });
 });

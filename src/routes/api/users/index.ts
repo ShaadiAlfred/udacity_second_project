@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import createRoute from "./create";
 import showRoute from "./show";
+import loginRoute from "./login";
 import { hasValidToken } from "../../../middlewares";
 import { UserStore } from "../../../database/models/User";
 
@@ -11,6 +12,7 @@ router.get("/", hasValidToken, async (_req: Request, res: Response) => {
 });
 
 router.use(createRoute);
+router.use(loginRoute);
 router.use(showRoute);
 
 export default router;
