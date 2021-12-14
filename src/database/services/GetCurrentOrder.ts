@@ -10,7 +10,7 @@ export const getCurrentOrder = async (userId: number) => {
     return null;
   }
 
-  let result: OrderProductResponse = { ...order, products: [] };
+  const result: OrderProductResponse = { ...order, products: [] };
 
   const orderProducts: OrderProduct[] = (
     await runQuery(`SELECT * FROM "ordersproducts" WHERE "orderid" = $1`, [order.id])
