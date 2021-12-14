@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { OrderStore } from "../../../database/models/Order";
-import { OrderProduct, OrderProductRelationship } from "../../../database/services/ProductOrder";
+import { OrderProduct, OrderProductRelationship } from "../../../database/services/OrderProduct";
 import { hasValidToken } from "../../../middlewares";
 import { OrderStatus } from "../../../types/OrderStatus";
 import { Cart } from "../../../types/CreateOrderRequest";

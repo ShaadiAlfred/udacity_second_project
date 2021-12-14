@@ -40,4 +40,30 @@ describe("test orders routes", async () => {
         done();
       });
   });
+
+  it("should fail because lacks token order GET /api/orders/current/:userId", (done) => {
+    request(app)
+      .get("/api/orders/current/1")
+      .expect(401)
+      .then(() => {
+        done();
+      });
+  });
+
+  it("should return the current order GET /api/orders/current/:userId", (done) => {
+    request(app)
+      .get("/api/orders/current/1")
+      .set("Authorization", "Bearer " + token)
+      .expect(200)
+      .then((res) => {
+        expect(res.body.id).toBeDefined();
+        expect(res.body.userId).toBeDefined();
+        expect(res.body.status).toBe("active");
+        expect(res.body.products.length).toBe(2);
+        expect(res.body.products[0].id).toBe(product1.id);
+        expect(res.body.products[0].quantity).toBe(3);
+
+        done();
+      });
+  });
 });
