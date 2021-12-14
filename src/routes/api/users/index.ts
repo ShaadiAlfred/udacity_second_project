@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import createRoute from "./create";
 import showRoute from "./show";
 import loginRoute from "./login";

@@ -1,9 +1,9 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import apiRoutes from "./api";
 
 const router = express.Router();
 
-router.get("/", (_: express.Request, res: express.Response): express.Response => {
+router.get("/", (_req: Request, res: Response): Response => {
   return res.send("Hello World");
 });
 

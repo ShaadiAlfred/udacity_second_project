@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import { CreateUserRequest } from "../../../types/requests/CreateUserRequest";
+import { CreateUserRequest } from "../../../types/CreateUserRequest";
 import { UserStore } from "../../../database/models/User";
 import { generateJwt } from "../../../helpers/jwt";
 import { DatabaseError } from "pg";
@@ -44,7 +44,7 @@ router.post("/", async (req: Request<{}, {}, CreateUserRequest>, res: Response):
     return res.status(500).json({ message: "Failed to create a new user" });
   }
 
-  return res.json({ token: generateJwt(JSON.stringify(user)) });
+  return res.json({ token: generateJwt(user) });
 });
 
 export default router;

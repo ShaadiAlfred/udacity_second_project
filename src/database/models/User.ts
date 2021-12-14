@@ -17,13 +17,11 @@ export class UserStore {
       parseInt(process.env.SALT_ROUNDS ?? "0"),
     );
 
-    user.password = hashedPassword;
-
     const result = await runQuery(
       `INSERT INTO "users" (username, firstname, lastname, password)
       VALUES ($1, $2, $3, $4)
       RETURNING *`,
-      [user.username, user.firstname, user.lastname, user.password],
+      [user.username, user.firstname, user.lastname, hashedPassword],
     );
 
     return result.rows[0];
@@ -56,7 +54,7 @@ export class UserStore {
     return null;
   }
 
-  static async index(): Promise<User[]> {
+  static async index(): Promise<User[] | void> {
     const result = await runQuery(`SELECT id, username, firstname, lastname from "users"`);
 
     if (result.rowCount === 0) {

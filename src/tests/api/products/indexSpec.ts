@@ -1,26 +1,22 @@
 import app from "../../../index";
 import request from "supertest";
-
-let token: string;
-
-const product = {
-  name: "Hat",
-  price: 3450,
-};
+import { user } from "../../../database/prepareDatabaseForTesting";
+import { Product } from "../../../database/models/Product";
 
 describe("Test product's routes", () => {
-  beforeAll((done) => {
-    const user = {
-      username: "johnsmith",
-      firstname: "John",
-      lastname: "Smith",
-      password: "password",
-    };
+  let token: string;
 
+  const product: Product = {
+    id: 3,
+    name: "Pants",
+    price: 5099,
+  };
+
+  beforeAll((done) => {
     request(app)
-      .post("/api/users")
-      .send(user)
-      .end((_err, res) => {
+      .post("/api/users/login")
+      .send({ username: user.username, password: user.password })
+      .then((res) => {
         token = res.body.token;
         done();
       });
@@ -33,9 +29,9 @@ describe("Test product's routes", () => {
       .send(product)
       .expect(200)
       .end((_err, res) => {
-        expect(res.body.id).toBeDefined();
-        expect(res.body.name).toBe(product.name);
-        expect(res.body.price).toBe(product.price);
+        expect(res.body.id).toEqual(product.id);
+        expect(res.body.name).toEqual(product.name);
+        expect(res.body.price).toEqual(product.price);
         done();
       });
   });
@@ -68,7 +64,7 @@ describe("Test product's routes", () => {
     request(app)
       .get("/api/products/1")
       .expect(200)
-      .end((_err, res) => {
+      .then((res) => {
         expect(res.body.id).toBeDefined();
         expect(res.body.name).toBeDefined();
         expect(res.body.price).toBeDefined();

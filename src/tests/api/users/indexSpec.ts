@@ -1,16 +1,9 @@
 import app from "../../../index";
 import request from "supertest";
 
-let token: string;
-
-const user1 = {
-  id: 1,
-  username: "johndoe",
-  firstname: "John",
-  lastname: "Doe",
-};
-
 describe("Test users routes", () => {
+  let token: string;
+
   it("POST /api/users should create a user", (done) => {
     request(app)
       .post("/api/users")
@@ -84,7 +77,7 @@ describe("Test users routes", () => {
       .get("/api/users")
       .expect(200)
       .set("Authorization", "Bearer " + token)
-      .end((_err, res) => {
+      .then((res) => {
         expect(res.body[0].id).toBeDefined();
         expect(res.body[0].username).toBeDefined();
         expect(res.body[0].firstname).toBeDefined();
@@ -126,7 +119,7 @@ describe("Test users routes", () => {
       request(app)
         .post("/api/users/login")
         .send({
-          username: user1.username,
+          username: "johndoe",
           password: "password",
         })
         .expect(200)

@@ -17,7 +17,7 @@ router.post(
       return res.status(400).json({ message: "Wrong credentials or unregistered user" });
     }
 
-    const token = generateJwt(JSON.stringify(user));
+    const token = generateJwt(user);
 
     return res.json({ token });
   },

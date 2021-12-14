@@ -8,7 +8,8 @@
     "watch": "npx nodemon src/index.ts",
     "build": "npx tsc",
     "jasmine": "jasmine --config=spec/support/jasmine.json",
-    "test": "cross-env NODE_ENV=test db-migrate --env test up && npm run build && cross-env NODE_ENV=test npm run jasmine; cross-env NODE_ENV=test db-migrate reset > /dev/null",
+    "preparedb": "cross-env NODE_ENV=test node dist/database/prepareDatabaseForTesting.js",
+    "test": "cross-env NODE_ENV=test db-migrate --env test up; npm run build; npm run preparedb; cross-env NODE_ENV=test npm run jasmine; cross-env NODE_ENV=test db-migrate reset > /dev/null",
     "lint": "eslint src/*/**/*.ts",
     "lintf": "eslint src/*/**/*.ts --fix",
     "prettier": "npx prettier --write . --ignore-path .gitignore"

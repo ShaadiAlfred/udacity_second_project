@@ -8,12 +8,12 @@ export type Order = {
 };
 
 export class OrderStore {
-  static async create(order: Order): Promise<Order> {
+  static async create(userId: number, status: string): Promise<Order> {
     const result = await runQuery(
       `INSERT INTO "orders" (userId, status)
       VALUES ($1, $2)
       RETURNING *`,
-      [order.userId, order.status],
+      [userId, status],
     );
 
     return result.rows[0];

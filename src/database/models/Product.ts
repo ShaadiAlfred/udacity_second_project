@@ -20,10 +20,14 @@ export class ProductStore {
   }
 
   static async find(id: number): Promise<Product | null> {
-    const result = await runQuery(`SELECT * from "products" WHERE "id" = $1`, [id]);
+    try {
+      const result = await runQuery(`SELECT * from "products" WHERE "id" = $1`, [id]);
 
-    if (result.rowCount !== 0) {
-      return result.rows[0];
+      if (result.rowCount !== 0) {
+        return result.rows[0];
+      }
+    } catch (err) {
+      console.log(err);
     }
 
     return null;
