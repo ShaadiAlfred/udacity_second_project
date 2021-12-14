@@ -114,3 +114,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 - quantity of each product in the order
 - user_id
 - status of order (active or complete)
+
+## Database Schema
+![image](https://user-images.githubusercontent.com/3685582/146075851-c28d8710-c8bc-4fb7-a597-889a09b620b2.png)
+
