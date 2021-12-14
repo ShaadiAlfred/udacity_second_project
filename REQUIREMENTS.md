@@ -6,23 +6,89 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 
+**Authentication is through `Authorization` header with `Bearer <token>`**
+
 #### Products
 
 - Index
+
+  `GET /api/products`
+
 - Show
+
+  `GET /api/products/:id`
+
 - Create [token required]
+
+  `POST /api/products`
+
+  Request body:
+
+  ```typescript
+  {
+    "name": string,
+    "price": number
+    // prices are integers, in cents
+  }
+  ```
+
 - [OPTIONAL] Top 5 most popular products
 - [OPTIONAL] Products by category (args: product category)
 
 #### Users
 
 - Index [token required]
+
+  `GET /api/users`
+
 - Show [token required]
+
+  `GET /api/users/:id`
+
+  Or
+
+  `GET /api/users/:username`
+
 - Create N[token required]
+
+  `POST /api/users`
+
+  Request body:
+
+  ```typescript
+      {
+          "username": string,
+          // username must be unique
+          "firstname": string,
+          "lastname": string,
+          "password": string
+      }
+  ```
 
 #### Orders
 
 - Current Order by user (args: user id)[token required]
+
+  `GET /api/order/current/:userId`
+
+- Create order
+
+  `POST /api/orders`
+
+  Request body:
+
+  ```typescript
+  {
+      products: [
+        {
+          id: number,
+          quantity: number,
+        },
+        ...
+      ],
+  }
+  ```
+
 - [OPTIONAL] Completed Orders by user (args: user id)[token required]
 
 ## Data Shapes

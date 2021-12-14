@@ -1,55 +1,68 @@
-# Image Processing API
+# Storefront Backend
 
-An API that uses [sharp](https://github.com/lovell/sharp) to generate thumbnails.
+A backend for a store.
 
-## Usage
+## Installing packages
 
-`GET /api/images?filename={filename}&width={width}&height={height}`
+`npm install`
 
-### Notes
+## Starting the database
 
-- > If the `filename` doesn't include an extension, `.jpg` will be assumed.
+Docker creates 3 databases when it's run for the first time:
 
-- > The API caches the first generated thumbnail only, and if the requested dimensions are different than the cached image, the response will have the correct dimensions, but the cached image will be the same with the old dimensions. Caching happens only once for each image.
+- Development
+- Testing
+- Production
+
+You can start docker by running:
+
+`docker-compose up -d`
+
+### Database Credentials
+
+They are set in the `docker-compose.yml` file
+
+```yaml
+- POSTGRES_USER=postgres
+- POSTGRES_PASSWORD=postgres
+```
+
+And the default port is: `5432`
 
 ## npm scripts
 
-- ### `npm run start`
+- `npm run start`
 
-Starts the server, intended to be run in production
+Builds and starts the server on port `3000`
 
-- ### `npm run dev`
+- `npm run watch`
 
-Starts nodemon with ts-node support, so it updates whenever any `*.ts` files are modified
+Starts nodemon with ts-node support, so it updates whenever any `*.ts` file is modified
 
-- ### `npm run build`
+- `npm run build`
 
 Builds the files in the `src` directory, and outputs the transpiled `JavaScript` code into the `dist` directory
 
-- ### `npm run jasmine`
+- `npm run jasmine`
 
-Runs jasmine.
+Runs jasmine _without building_.
 
-#### Note
+- `npm run preparedb`
 
-> Doesn't build the project before running the tests, it just runs the tests directly
+Prepares the testing database `store_test` by running the file `dist/database/prepareDatabaseForTesting.js` which seeds it with initial values.
 
-- ### `npm run test`
+- `npm run test`
 
-Builds the project, and then runs the jasmine tests
+It builds the project, runs the migrations on the database for testing, seeds the database, runs the jasmine test suites, then after it finishes it clears out the testing database.
 
-- ### `npm run lint`
+- `npm run lint`
 
-Lints the project (just the `src` folder and its subdirectories) and shows the linting results
+Runs eslint
 
-#### Note
+- `npm run lintf`
 
-> ESLint is configured to use Prettier rules as linting rules too
+Runs eslint and fixes any issues automatically
 
-- ### `npm run lintf`
+- `npm run prettier`
 
-Lints and fixes any issues found in the code
-
-## Preview
-
-https://user-images.githubusercontent.com/3685582/144757941-67a26bcb-5911-4d3b-b281-1e308a835508.mp4
+Runs prettier
