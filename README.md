@@ -18,6 +18,10 @@ You can start docker by running:
 
 `docker-compose up -d`
 
+## .env file
+
+Copy the `.env.example` file `cp .env.example .env` then fill out the postgres credentials (the ones in the `docker-compose.yml`) and add your secret pepper, and salt rounds.
+
 ### Database Credentials
 
 They are set in the `docker-compose.yml` file
