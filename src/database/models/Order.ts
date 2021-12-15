@@ -9,13 +9,21 @@ export type Order = {
 };
 
 export class OrderStore {
+  private static castUserIdAsInt(result: QueryResult<any>): void {
+    for (let i = 0; i < result.rows.length; i++) {
+      result.rows[i].userId = parseInt(result.rows[i].userId);
+    }
+  }
+
   static async create(userId: number, status: string): Promise<Order> {
     const result = await runQuery(
-      `INSERT INTO "orders" (userId, status)
+      `INSERT INTO "orders" ("userId", "status")
       VALUES ($1, $2)
       RETURNING *`,
       [userId, status],
     );
+
+    this.castUserIdAsInt(result);
 
     return result.rows[0];
   }
@@ -24,6 +32,7 @@ export class OrderStore {
     const result = await runQuery(`SELECT * from "orders" WHERE "id" = $1`, [id]);
 
     if (result.rowCount !== 0) {
+      this.castUserIdAsInt(result);
       return result.rows[0];
     }
 
@@ -34,17 +43,13 @@ export class OrderStore {
     let result: QueryResult<Order>;
 
     if (isActive) {
-      result = await runQuery(
-        `SELECT id, userid as "userId", status from "orders" WHERE "userid" = $1 AND "status" = 'active'`,
-        [userId],
-      );
+      result = await runQuery(`SELECT * from "orders" WHERE "userId" = $1 AND "status" = 'active'`, [userId]);
     } else {
-      result = await runQuery(`SELECT id, userid as "userId", status from "orders" WHERE "userid" = $1`, [userId]);
+      result = await runQuery(`SELECT * from "orders" WHERE "userId" = $1`, [userId]);
     }
 
     if (result.rowCount !== 0) {
-      result.rows[0].userId = parseInt(result.rows[0].userId as unknown as string);
-
+      this.castUserIdAsInt(result);
       return result.rows[0];
     }
 

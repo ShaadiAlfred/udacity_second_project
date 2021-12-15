@@ -35,7 +35,7 @@ describe("test orders routes", async () => {
       .end((_err, res) => {
         expect(res.body.id).toBeDefined();
         expect(res.body.status).toBe("active");
-        expect(res.body.userid).toBeDefined();
+        expect(res.body.userId).toBeDefined();
 
         done();
       });
