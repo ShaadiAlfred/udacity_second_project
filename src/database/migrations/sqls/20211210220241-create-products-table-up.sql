@@ -1,6 +1,6 @@
 CREATE TABLE products (
     id SERIAL PRIMARY KEY,
-    "name" VARCHAR,
+    "name" VARCHAR NOT NULL,
     -- Price in cents
-    price INTEGER
+    price INTEGER NOT NULL
 );
