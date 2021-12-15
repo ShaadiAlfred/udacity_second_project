@@ -8,15 +8,64 @@ A backend for a store.
 
 ## .env file
 
-Copy the `.env.example` file `cp .env.example .env` then fill out the postgres credentials (the ones in the `docker-compose.yml`) and add your secret pepper, and salt rounds.
+Copy the `.env.example` file `cp .env.example .env` then fill out:
+
+- the postgres credentials (make sure they are the same ones in the `docker-compose.yml` because docker creates a user with the credentials found in that yaml file upon starting)
+
+`docker-compose.yml`
+
+```yaml
+- POSTGRES_USER=postgres
+- POSTGRES_PASSWORD=postgres
+```
+
+`.env`
+
+```console
+DATABASE_DEVELOPMENT_USERNAME=postgres
+DATABASE_DEVELOPMENT_PASSWORD=postgres
+DATABASE_TEST_USERNAME=postgres
+DATABASE_TEST_PASSWORD=postgres
+DATABASE_PRODUCTION_USERNAME=postgres
+DATABASE_PRODUCTION_PASSWORD=postgres
+```
+
+- jwt secret token
+
+```console
+TOKEN_SECRET=<secret-token>
+```
+
+- secret pepper, and salt rounds for bcrypt
+
+```console
+BCRYPT_PASSWORD=<secret-pepper>
+SALT_ROUNDS=<number-of-salt-rounds>
+```
 
 ## Starting the database
 
-Docker creates 3 databases when it's run for the first time:
+Docker creates 3 databases _automatically_ when it's run for the first time:
 
 - Development
 - Testing
 - Production
+
+Then it grants access to these databases for the user specified in the `docker-compose.yml` file. For more details check the file in `src/database/docker_init.sql` which docker runs automatically when it's run for the first time.
+
+```postgres
+-- Dev
+CREATE DATABASE store_dev;
+GRANT ALL PRIVILEGES ON DATABASE store_dev TO postgres;
+
+-- Testing
+CREATE DATABASE store_test;
+GRANT ALL PRIVILEGES ON DATABASE store_test TO postgres;
+
+-- Production
+CREATE DATABASE store;
+GRANT ALL PRIVILEGES ON DATABASE store TO postgres;
+```
 
 You can start docker by running:
 
