@@ -6,6 +6,10 @@ A backend for a store.
 
 `npm install`
 
+## .env file
+
+Copy the `.env.example` file `cp .env.example .env` then fill out the postgres credentials (the ones in the `docker-compose.yml`) and add your secret pepper, and salt rounds.
+
 ## Starting the database
 
 Docker creates 3 databases when it's run for the first time:
@@ -18,10 +22,6 @@ You can start docker by running:
 
 `docker-compose up -d`
 
-## .env file
-
-Copy the `.env.example` file `cp .env.example .env` then fill out the postgres credentials (the ones in the `docker-compose.yml`) and add your secret pepper, and salt rounds.
-
 ### Database Credentials
 
 They are set in the `docker-compose.yml` file
@@ -32,6 +32,17 @@ They are set in the `docker-compose.yml` file
 ```
 
 And the default port is: `5432`
+
+### Migrations
+
+To run migrations install `db-migrate`
+
+```console
+npm install -g db-migrate
+db-migrate up
+```
+
+Migration files are found in `src/database/migrations`. `database.json` is found in `src/database/config/database.json`, it reads the values from the `.env` file.
 
 ## npm scripts
 
