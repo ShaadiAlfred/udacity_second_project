@@ -1,6 +1,6 @@
 import { runQuery } from "..";
 import { OrderProductResponse } from "../../types/OrderProductResponse";
-import { Order, OrderStore } from "../models/Order";
+import { OrderStore } from "../models/Order";
 import { OrderProduct } from "./OrderProduct";
 
 export const getCurrentOrder = async (userId: number) => {

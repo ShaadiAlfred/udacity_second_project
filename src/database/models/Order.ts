@@ -9,9 +9,9 @@ export type Order = {
 };
 
 export class OrderStore {
-  private static castUserIdAsInt(result: QueryResult<any>): void {
+  private static castUserIdAsInt(result: QueryResult<Order>): void {
     for (let i = 0; i < result.rows.length; i++) {
-      result.rows[i].userId = parseInt(result.rows[i].userId);
+      result.rows[i].userId = parseInt(result.rows[i].userId as unknown as string);
     }
   }
 
