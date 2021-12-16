@@ -6,8 +6,7 @@ import { Product } from "../../../database/models/Product";
 describe("Test product's routes", () => {
   let token: string;
 
-  const product: Product = {
-    id: 3,
+  let product: Product = {
     name: "Pants",
     price: 5099,
   };
@@ -29,7 +28,7 @@ describe("Test product's routes", () => {
       .send(product)
       .expect(200)
       .end((_err, res) => {
-        expect(res.body.id).toEqual(product.id);
+        expect(res.body.id).toBeDefined();
         expect(res.body.name).toEqual(product.name);
         expect(res.body.price).toEqual(product.price);
         done();
